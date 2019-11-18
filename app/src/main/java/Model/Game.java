@@ -100,4 +100,11 @@ public class Game {
         }
         return true;
     }
+
+    public void reset() {
+        player1 = null;
+        player2 = null;
+        currentPlayer = null;
+        cells = null;
+    }
 }

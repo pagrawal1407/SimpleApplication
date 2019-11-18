@@ -9,7 +9,7 @@ public class Cell {
 
     public boolean isEmpty() {
         if (player != null) {
-            return player.value == null;
+            return player.value == null || player.value.length() == 0;
         }
         return true;
     }
