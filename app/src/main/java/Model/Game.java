@@ -1,5 +1,7 @@
 package Model;
 
+import android.util.Log;
+
 public class Game {
     private static final String TAG = Game.class.getSimpleName();
     private static final int BOARD_SIZE = 3;
@@ -19,5 +21,83 @@ public class Game {
 
     public void switchPlayer() {
         currentPlayer = currentPlayer == player1? player2 : player1;
+    }
+
+    public boolean hasGameEnded() {
+        if (hasThreeSameHorizontalCells() || hasThreeSameVerticalCells() || hasThreeSameDiagonalCells()) {
+            return true;
+        }
+        if (isBoardFull()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasThreeSameHorizontalCells() {
+        try {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                if (areEqual(cells[i][0], cells[i][1], cells[i][2])) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean hasThreeSameVerticalCells() {
+        try {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                if (areEqual(cells[0][i], cells[1][i], cells[2][i])) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean hasThreeSameDiagonalCells() {
+        try {
+            return areEqual(cells[0][0], cells[1][1], cells[2][2]) ||
+                    areEqual(cells[2][0], cells[1][1], cells[0][2]);
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isBoardFull() {
+        for (Cell[] row : cells) {
+            for (Cell col : row) {
+                if (col.player.value == null || col.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean areEqual(Cell... cells) {
+        if (cells == null || cells.length == 0) {
+            return false;
+        }
+
+        for (Cell cell : cells) {
+            if (cell == null || cell.player.value == null || cell.player.value.length() == 0) {
+                return false;
+            }
+        }
+        final Cell comparisonBase = cells[0];
+        for (int i = 1; i < cells.length; i++) {
+            if (!comparisonBase.player.value.equals(cells[i].player.value)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
