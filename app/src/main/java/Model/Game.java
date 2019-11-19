@@ -2,6 +2,8 @@ package Model;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 public class Game {
     private static final String TAG = Game.class.getSimpleName();
     private static final int BOARD_SIZE = 3;
@@ -12,6 +14,8 @@ public class Game {
     public Player currentPlayer = player1;
 
     public Cell[][] cells;
+
+    public MutableLiveData<Player> winner = new MutableLiveData<>();
 
     public Game (String playerOne, String playerTwo) {
         cells = new Cell[BOARD_SIZE][BOARD_SIZE];
@@ -73,8 +77,8 @@ public class Game {
 
     public boolean isBoardFull() {
         for (Cell[] row : cells) {
-            for (Cell col : row) {
-                if (col.player.value == null || col.isEmpty()) {
+            for (Cell column : row) {
+                if (column.player.value == null || column.isEmpty()) {
                     return false;
                 }
             }
